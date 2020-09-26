@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/FoldBtn">
+        <file>Resource/FoldBtn1.png</file>
+        <file>Resource/FoldBtn2.png</file>
+    </qresource>
+    <qresource prefix="/Btn">
+        <file>Resource/Close.png</file>
+    </qresource>
+</RCC>
