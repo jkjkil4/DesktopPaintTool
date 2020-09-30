@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        Class/toolitem.cpp \
         Widget/iconbtn.cpp \
         Widget/menubar.cpp \
         Widget/statebtn.cpp \
@@ -32,9 +33,11 @@ SOURCES += \
         widget.cpp
 
 HEADERS += \
+        Class/toolitem.h \
         Widget/iconbtn.h \
         Widget/menubar.h \
         Widget/statebtn.h \
+        todo.h \  # This file only contains comments which explain what should I do next, so I added it to .gitignore
         header.h \
         widget.h
 

@@ -13,7 +13,7 @@
 
 
 #define repeat(i, n) for(int i = 0; i < n; i++)
-
+#define SC static constexpr
 
 inline void limitWidth(QWidget *widget, int w) {
     widget->setMaximumWidth(w);
