@@ -16,6 +16,13 @@ Widget::Widget(QWidget *parent)
         toolsWidget->setVisible(state);
         adjustSize();
     });
+    connect(menuBar, &MenuBar::wndClose, [=]{
+        int res = QMessageBox::information(this, "提示", "确认要关闭吗", QMessageBox::Yes, QMessageBox::No);
+        if(res == QMessageBox::Yes) {
+            //TODO: close画板
+            close();
+        }
+    });
 
     limitHeight(toolsWidget, 400);
 

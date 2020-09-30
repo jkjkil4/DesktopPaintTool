@@ -2,6 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
+#include <QMessageBox>
 #include <QVBoxLayout>
 
 #include <QGuiApplication>
@@ -22,6 +23,8 @@ public:
 
 private:
     QWidget *toolsWidget = new QWidget;
+
+    //TODO: 画板
 };
 
 #endif // WIDGET_H
