@@ -11,6 +11,11 @@
 #include "statebtn.h"
 #include "iconbtn.h"
 
+
+/*
+    MenuBar
+    菜单栏
+*/
 class MenuBar : public QWidget
 {
     Q_OBJECT

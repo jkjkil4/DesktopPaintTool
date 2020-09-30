@@ -5,6 +5,10 @@
 
 #include "header.h"
 
+/*
+    IconBtn
+    图标按钮
+*/
 class IconBtn : public QAbstractButton
 {
 protected:

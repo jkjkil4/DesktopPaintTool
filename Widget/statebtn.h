@@ -7,6 +7,11 @@
 
 #include "header.h"
 
+
+/*
+    StateBtn
+    在被点击后会在两个图标间切换，并且发出stateChanged信号
+*/
 class StateBtn : public QAbstractButton
 {
     Q_OBJECT

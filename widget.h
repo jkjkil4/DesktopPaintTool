@@ -11,6 +11,11 @@
 #include "header.h"
 #include "Widget/menubar.h"
 
+
+/*
+    Widget
+    主窗口
+*/
 class Widget : public QWidget
 {
     Q_OBJECT
