@@ -26,7 +26,7 @@ public:
 
     struct Item
     {
-        typedef void(*Func)(QImage &tmpImg, QPoint pos, QRect &updateRect);
+        typedef void(*Func)(QImage &srcImg, QImage &tmpImg, QPoint pos, QRect &updateRect);
 
         Item() = default;
         Item(const ToolItem& toolItem, Func imgProcFunc) : toolItem(toolItem), imgProcFunc(imgProcFunc) {}
@@ -36,14 +36,7 @@ public:
     };
     QVector<Item> vItems = {
         Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr)
+        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolEraser.png"), "橡皮擦"), nullptr)
     };
 
     SC int btnWidth = 60;
