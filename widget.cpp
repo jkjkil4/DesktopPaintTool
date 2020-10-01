@@ -19,11 +19,7 @@ Widget::Widget(QWidget *parent)
         adjustSize();
     });
     connect(menuBar, &MenuBar::wndClose, [=]{
-        int res = QMessageBox::information(this, "提示", "确认要关闭吗", "确认", "取消");
-        if(res == 0) {
-            paintWidget->close();
-            close();
-        }
+        close();
     });
 
     ToolList *toolList = new ToolList;
@@ -41,6 +37,7 @@ Widget::Widget(QWidget *parent)
             paintWidget->setVisible(false);
             setParent(nullptr);
             setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+            setAttribute(Qt::WA_QuitOnClose);
             setVisible(true);
         }
     });
@@ -80,5 +77,14 @@ void Widget::paintEvent(QPaintEvent *) {
 
     p.fillRect(1, 1, width() - 2, height() - 2, QColor(240, 240, 240));
     jDrawRecFrame(p, 0, 0, width(), height(), 1, Qt::gray);
+}
+
+void Widget::closeEvent(QCloseEvent *ev) {
+    int res = QMessageBox::information(this, "提示", "确认要关闭吗", "确认", "取消");
+    if(res == 0) {
+        paintWidget->close();
+    } else {
+        ev->ignore();
+    }
 }
 

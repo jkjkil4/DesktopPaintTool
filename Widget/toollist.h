@@ -36,11 +36,10 @@ public:
     };
     QVector<Item> vItems = {
         Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"),
-        [](QImage &img, QPoint pos, int size, QRect &updateRect){
+        [](QImage &img, QPoint posBefore, QPoint pos, int size, QRect &updateRect){
             QPainter p(&img);
-            p.setBrush(Qt::red);
-            p.setPen(Qt::NoPen);
-            p.drawEllipse(pos, size, size);
+            p.setPen(QPen(Qt::red, size));
+            p.drawLine(posBefore, pos);
             int x = qMax(0, pos.x() - size - 2);
             int y = qMax(0, pos.y() - size - 2);
             int w = qMin(img.width() - x, 2 * size + 4);

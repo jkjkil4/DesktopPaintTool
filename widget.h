@@ -7,6 +7,7 @@
 
 #include <QGuiApplication>
 #include <QScreen>
+#include <QCloseEvent>
 
 #include "header.h"
 #include "Widget/menubar.h"
@@ -24,6 +25,7 @@ class Widget : public QWidget
     Q_OBJECT
 protected:
     void paintEvent(QPaintEvent *) override;
+    void closeEvent(QCloseEvent *ev) override;
 
 public:
     Widget(QWidget *parent = nullptr);

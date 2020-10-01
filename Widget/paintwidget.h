@@ -17,10 +17,11 @@ class PaintWidget : public QWidget
 protected:
     void mousePressEvent(QMouseEvent *ev) override;
     void mouseMoveEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
     void paintEvent(QPaintEvent *) override;
 
 public:
-    typedef void(*ProcFunc)(QImage &img, QPoint pos, int size, QRect &updateRect);
+    typedef void(*ProcFunc)(QImage &img, QPoint posBefore, QPoint pos, int size, QRect &updateRect);
 
     PaintWidget(QWidget *parent = nullptr);
     ~PaintWidget() override = default;
@@ -31,6 +32,7 @@ public:
 
 private:
     QTimer *timerUpdate = new QTimer(this);
+    QPoint posBefore;
     QImage imgBefore, imgNow;
     QRect updateRect;
 };
