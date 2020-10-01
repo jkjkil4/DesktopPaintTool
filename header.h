@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QDebug>
+#include <QCoreApplication>
+
 
 #define VAR_GET_FUNC(Func, var, Type) Type get##Func() const { return var; }
 #define VAR_SET_FUNC(Func, var, Type) void set##Func(const Type &__##var##__) { var = __##var##__; }
@@ -16,6 +18,7 @@
 #define repeat(i, n) for(int i = 0; i < n; i++)
 #define SC static constexpr
 #define START_TIMER(timer, msec) if(!timer->isActive()) timer->start(msec)
+#define APP_DIR QCoreApplication::applicationDirPath()
 
 
 inline void sumRect(QRect &srcRect, const QRect &dstRect) {
