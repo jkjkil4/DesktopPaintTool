@@ -14,10 +14,10 @@
 class ToolItem
 {
 public:
-    void onPaint(QPainter &p, QPoint pos);
+    ToolItem() = default;
+    ToolItem(const QIcon &icon, const QString &text);
+    void onPaint(QPainter &p, QRect r);
 
-    int width = 70;      //区域宽度
-    int height = 70;     //区域高度
     SC int iconWidth = 40;  //图像宽度
     SC int iconHeight = 40; //图像高度
 

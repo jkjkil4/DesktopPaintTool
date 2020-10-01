@@ -25,6 +25,8 @@ Widget::Widget(QWidget *parent)
     });
 
     ToolList *toolList = new ToolList;
+    connect(toolList, SIGNAL(toolChanged()), toolCursor, SLOT(update()));
+    connect(toolCursor, SIGNAL(clicked()), toolList, SLOT(update()));
 
     limitHeight(toolsWidget, 400);
 

@@ -6,7 +6,7 @@ ToolCursor::ToolCursor(QWidget *parent) : QAbstractButton(parent)
     toolItem.text = "鼠标";
     ToolItem::current = &toolItem;
 
-    limitSize(this, toolItem.width, toolItem.height);
+    limitSize(this, 70, 70);
 
     connect(this, &ToolCursor::clicked, [=]{ ToolItem::current = &toolItem; update(); });
 }
@@ -23,5 +23,5 @@ void ToolCursor::paintEvent(QPaintEvent *) {
     bool down = isDown();
     p.fillRect(0, 0, width(), height(), (down || ToolItem::current == &toolItem) ? color3 : (mouseAt ? color2 : color1));
 
-    toolItem.onPaint(p, QPoint(0, 0));
+    toolItem.onPaint(p, QRect(0, 0, 70, 70));
 }

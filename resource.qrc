@@ -8,5 +8,6 @@
     </qresource>
     <qresource prefix="/ToolBtn">
         <file>Resource/ToolCursor.png</file>
+        <file>Resource/ToolBrush.png</file>
     </qresource>
 </RCC>
