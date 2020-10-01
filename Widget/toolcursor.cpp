@@ -8,7 +8,11 @@ ToolCursor::ToolCursor(QWidget *parent) : QAbstractButton(parent)
 
     limitSize(this, 70, 70);
 
-    connect(this, &ToolCursor::clicked, [=]{ ToolItem::current = &toolItem; update(); });
+    connect(this, &ToolCursor::clicked, [=]{
+        ToolItem::current = &toolItem;
+        PaintWidget::ins->procFunc = nullptr;
+        update();
+    });
 }
 
 bool ToolCursor::checkMouseAt() {

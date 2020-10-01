@@ -18,6 +18,19 @@
 #define START_TIMER(timer, msec) if(!timer->isActive()) timer->start(msec)
 
 
+inline void sumRect(QRect &srcRect, const QRect &dstRect) {
+    if(srcRect.isNull()) {
+        srcRect = dstRect;
+        return;
+    }
+    int resX = qMin(srcRect.x(), dstRect.x());
+    int resY = qMin(srcRect.y(), dstRect.y());
+    int resRight = qMax(srcRect.x() + srcRect.width(), dstRect.x() + dstRect.width());
+    int resBottom = qMax(srcRect.y() + srcRect.height(), dstRect.y() + dstRect.height());
+    srcRect = QRect(resX, resY, resRight - resX, resBottom - resY);
+}
+
+
 inline void limitWidth(QWidget *widget, int w) {
     widget->setMaximumWidth(w);
     widget->setMinimumWidth(w);

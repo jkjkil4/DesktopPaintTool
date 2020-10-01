@@ -119,6 +119,7 @@ void ToolList::mouseReleaseEvent(QMouseEvent *ev) {
         if(mouseIndex != -1) {
             if(getMouseIndex(mapFromGlobal(cursor().pos())) == mouseIndex) {
                 ToolItem::current = &vItems[mouseIndex].toolItem;
+                PaintWidget::ins->procFunc = vItems[mouseIndex].procFunc;
                 emit toolChanged();
             }
         }

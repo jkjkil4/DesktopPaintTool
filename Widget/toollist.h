@@ -9,6 +9,7 @@
 
 #include "Class/toolitem.h"
 #include "header.h"
+#include "Widget/paintwidget.h"
 
 class ToolList : public QWidget
 {
@@ -26,16 +27,26 @@ public:
 
     struct Item
     {
-        typedef void(*Func)(QImage &img, QPoint pos, QRect &updateRect);
-
         Item() = default;
-        Item(const ToolItem& toolItem, Func imgProcFunc) : toolItem(toolItem), imgProcFunc(imgProcFunc) {}
+        Item(const ToolItem& toolItem, PaintWidget::ProcFunc procFunc)
+            : toolItem(toolItem), procFunc(procFunc) {}
 
         ToolItem toolItem;
-        Func imgProcFunc = nullptr;
+        PaintWidget::ProcFunc procFunc = nullptr;
     };
     QVector<Item> vItems = {
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"), nullptr),
+        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolBrush.png"), "画笔"),
+        [](QImage &img, QPoint pos, int size, QRect &updateRect){
+            QPainter p(&img);
+            p.setBrush(Qt::red);
+            p.setPen(Qt::NoPen);
+            p.drawEllipse(pos, size, size);
+            int x = qMax(0, pos.x() - size - 2);
+            int y = qMax(0, pos.y() - size - 2);
+            int w = qMin(img.width() - x, 2 * size + 4);
+            int h = qMin(img.height() - y, 2 * size + 4);
+            sumRect(updateRect, QRect(x, y, w, h));
+        }),
         Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolEraser.png"), "橡皮擦"), nullptr)
     };
 

@@ -4,6 +4,7 @@
 #include <QAbstractButton>
 
 #include "Class/toolitem.h"
+#include "Widget/paintwidget.h"
 
 class ToolCursor : public QAbstractButton
 {
