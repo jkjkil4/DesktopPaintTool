@@ -26,7 +26,7 @@ public:
 
     struct Item
     {
-        typedef void(*Func)(QImage &srcImg, QImage &tmpImg, QPoint pos, QRect &updateRect);
+        typedef void(*Func)(QImage &img, QPoint pos, QRect &updateRect);
 
         Item() = default;
         Item(const ToolItem& toolItem, Func imgProcFunc) : toolItem(toolItem), imgProcFunc(imgProcFunc) {}

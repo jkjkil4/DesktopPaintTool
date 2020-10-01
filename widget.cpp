@@ -4,6 +4,7 @@ Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
     //创建控件
+    PaintWidget::ins = paintWidget;
     paintWidget->setVisible(false);
     MenuBar *menuBar = new MenuBar;
     connect(menuBar, &MenuBar::wndMoveOffset, [=](int xOffset, int yOffset){
@@ -27,16 +28,21 @@ Widget::Widget(QWidget *parent)
 
     ToolList *toolList = new ToolList;
     connect(toolList, &ToolList::toolChanged, [=]{
-        toolCursor->update();
-        paintWidget->setVisible(true);
-        setParent(paintWidget);
-        setVisible(true);
+        if(!paintWidget->isVisible()) {
+            toolCursor->update();
+            paintWidget->setVisible(true);
+            setParent(paintWidget);
+            setVisible(true);
+        }
     });
     connect(toolCursor, &ToolCursor::clicked, [=]{
-        toolList->update();
-        paintWidget->setVisible(false);
-        setParent(nullptr);
-        setVisible(true);
+        if(paintWidget->isVisible()) {
+            toolList->update();
+            paintWidget->setVisible(false);
+            setParent(nullptr);
+            setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+            setVisible(true);
+        }
     });
 
     limitHeight(toolsWidget, 400);
@@ -58,7 +64,9 @@ Widget::Widget(QWidget *parent)
     setLayout(layMain);
 
     //设置属性
-    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    adjustSize();
+    setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
+    setAttribute(Qt::WA_QuitOnClose);
     limitWidth(this, 80);
 }
 
@@ -70,6 +78,7 @@ Widget::~Widget()
 void Widget::paintEvent(QPaintEvent *) {
     QPainter p(this);
 
+    p.fillRect(1, 1, width() - 2, height() - 2, QColor(240, 240, 240));
     jDrawRecFrame(p, 0, 0, width(), height(), 1, Qt::gray);
 }
 
