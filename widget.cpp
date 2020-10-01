@@ -17,8 +17,8 @@ Widget::Widget(QWidget *parent)
         adjustSize();
     });
     connect(menuBar, &MenuBar::wndClose, [=]{
-        int res = QMessageBox::information(this, "提示", "确认要关闭吗", QMessageBox::Yes, QMessageBox::No);
-        if(res == QMessageBox::Yes) {
+        int res = QMessageBox::information(this, "提示", "确认要关闭吗", "确认", "取消");
+        if(res == 0) {
             //TODO: close画板
             close();
         }
