@@ -12,6 +12,7 @@
 #include "Widget/menubar.h"
 #include "Widget/toolcursor.h"
 #include "Widget/toollist.h"
+#include "Widget/paintwidget.h"
 
 
 /*
@@ -33,7 +34,7 @@ private:
 
     ToolCursor *toolCursor = new ToolCursor;
 
-    //TODO: 画板
+    PaintWidget *paintWidget = new PaintWidget;
 };
 
 #endif // WIDGET_H

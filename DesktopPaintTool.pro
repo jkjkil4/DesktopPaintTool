@@ -28,6 +28,7 @@ SOURCES += \
         Class/toolitem.cpp \
         Widget/iconbtn.cpp \
         Widget/menubar.cpp \
+        Widget/paintwidget.cpp \
         Widget/statebtn.cpp \
         Widget/toolcursor.cpp \
         Widget/toollist.cpp \
@@ -38,6 +39,7 @@ HEADERS += \
         Class/toolitem.h \
         Widget/iconbtn.h \
         Widget/menubar.h \
+        Widget/paintwidget.h \
         Widget/statebtn.h \
         Widget/toolcursor.h \
         Widget/toollist.h \
