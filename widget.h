@@ -10,6 +10,7 @@
 
 #include "header.h"
 #include "Widget/menubar.h"
+#include "Widget/toolcursor.h"
 
 
 /*
@@ -28,6 +29,8 @@ public:
 
 private:
     QWidget *toolsWidget = new QWidget;
+
+    ToolCursor *toolCursor = new ToolCursor;
 
     //TODO: 画板
 };

@@ -6,4 +6,7 @@
     <qresource prefix="/Btn">
         <file>Resource/Close.png</file>
     </qresource>
+    <qresource prefix="/ToolBtn">
+        <file>Resource/ToolCursor.png</file>
+    </qresource>
 </RCC>

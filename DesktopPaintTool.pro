@@ -25,9 +25,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        Class/toolitem.cpp \
         Widget/iconbtn.cpp \
         Widget/menubar.cpp \
         Widget/statebtn.cpp \
+        Widget/toolcursor.cpp \
         main.cpp \
         widget.cpp
 
@@ -36,6 +38,7 @@ HEADERS += \
         Widget/iconbtn.h \
         Widget/menubar.h \
         Widget/statebtn.h \
+        Widget/toolcursor.h \
         header.h \
         widget.h
 

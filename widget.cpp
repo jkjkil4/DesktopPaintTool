@@ -26,6 +26,13 @@ Widget::Widget(QWidget *parent)
 
     limitHeight(toolsWidget, 400);
 
+    //toolsWidget的layout
+    QVBoxLayout *layTools = new QVBoxLayout;
+    layTools->setMargin(4);
+    layTools->addWidget(toolCursor);
+    layTools->addStretch();
+    toolsWidget->setLayout(layTools);
+
     //创建布局
     QVBoxLayout *layMain = new QVBoxLayout;
     layMain->setSpacing(0);
