@@ -11,6 +11,7 @@
 #include "header.h"
 #include "Widget/menubar.h"
 #include "Widget/toolcursor.h"
+#include "Widget/toollist.h"
 
 
 /*

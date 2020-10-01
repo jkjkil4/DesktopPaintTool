@@ -6,7 +6,7 @@ ToolCursor::ToolCursor(QWidget *parent) : QAbstractButton(parent)
     toolItem.text = "鼠标";
     ToolItem::current = &toolItem;
 
-    limitSize(this, ToolItem::width, ToolItem::height);
+    limitSize(this, toolItem.width, toolItem.height);
 
     connect(this, &ToolCursor::clicked, [=]{ ToolItem::current = &toolItem; update(); });
 }

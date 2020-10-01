@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPainter>
+#include <QDebug>
 
 #define VAR_GET_FUNC(Func, var, Type) Type get##Func() const { return var; }
 #define VAR_SET_FUNC(Func, var, Type) void set##Func(const Type &__##var##__) { var = __##var##__; }
@@ -14,6 +15,8 @@
 
 #define repeat(i, n) for(int i = 0; i < n; i++)
 #define SC static constexpr
+#define START_TIMER(timer, msec) if(!timer->isActive()) timer->start(msec)
+
 
 inline void limitWidth(QWidget *widget, int w) {
     widget->setMaximumWidth(w);

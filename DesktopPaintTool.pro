@@ -30,6 +30,7 @@ SOURCES += \
         Widget/menubar.cpp \
         Widget/statebtn.cpp \
         Widget/toolcursor.cpp \
+        Widget/toollist.cpp \
         main.cpp \
         widget.cpp
 
@@ -39,6 +40,7 @@ HEADERS += \
         Widget/menubar.h \
         Widget/statebtn.h \
         Widget/toolcursor.h \
+        Widget/toollist.h \
         header.h \
         widget.h
 

@@ -24,13 +24,16 @@ Widget::Widget(QWidget *parent)
         }
     });
 
+    ToolList *toolList = new ToolList;
+
     limitHeight(toolsWidget, 400);
 
     //toolsWidget的layout
     QVBoxLayout *layTools = new QVBoxLayout;
     layTools->setMargin(4);
+    layTools->setSpacing(2);
     layTools->addWidget(toolCursor);
-    layTools->addStretch();
+    layTools->addWidget(toolList, 1);
     toolsWidget->setLayout(layTools);
 
     //创建布局
