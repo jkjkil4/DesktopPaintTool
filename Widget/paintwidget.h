@@ -21,6 +21,7 @@ protected:
     void mouseMoveEvent(QMouseEvent *ev) override;
     void mouseReleaseEvent(QMouseEvent *ev) override;
     void paintEvent(QPaintEvent *) override;
+    void closeEvent(QCloseEvent *) override;
 
 public:
     typedef void(*ProcFunc)(QImage &img, QPoint posBefore, QPoint pos, int size, QRect &updateRect);
@@ -41,10 +42,12 @@ private:
     //ur means UndoRedo
     QImage urImgBefore;
     QImage urImgNow;
+    void drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos);
     void urToFile(QPoint pos);
     void undo();
     void redo();
     uint urIndex = 0;
+    uint urIndexMin = 0;
     uint urIndexMax = 0;
 
 };

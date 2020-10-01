@@ -24,7 +24,7 @@ void PaintWidget::mousePressEvent(QMouseEvent *ev) {
         if(procFunc) {
             updateRect = QRect();
             posBefore = ev->pos();
-            (*procFunc)(imgNow, posBefore, ev->pos(), 4, updateRect);
+            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);
             START_TIMER(timerUpdate, 16);
         }
     }
@@ -33,7 +33,7 @@ void PaintWidget::mousePressEvent(QMouseEvent *ev) {
 void PaintWidget::mouseMoveEvent(QMouseEvent *ev) {
     if(ev->buttons() & Qt::LeftButton) {
         if(procFunc) {
-            (*procFunc)(imgNow, posBefore, ev->pos(), 4, updateRect);
+            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);
             posBefore = ev->pos();
             START_TIMER(timerUpdate, 16);
         }
@@ -42,6 +42,9 @@ void PaintWidget::mouseMoveEvent(QMouseEvent *ev) {
 
 void PaintWidget::mouseReleaseEvent(QMouseEvent *ev) {
     if(ev->button() == Qt::LeftButton) {
+        urImgBefore = imgBefore.copy(updateRect);
+        urImgNow = imgNow.copy(updateRect);
+        urToFile(updateRect.topLeft());
         QPainter p(&imgBefore);
         p.drawImage(updateRect, imgNow, updateRect);
         START_TIMER(timerUpdate, 16);
@@ -71,6 +74,8 @@ void PaintWidget::closeEvent(QCloseEvent *) {
             dir.remove(FILE_NAME(i, "Before"));
             dir.remove(FILE_NAME(i, "Now"));
         }
+        urIndex = 0;
+        urIndexMax = 0;
     }
 }
 
@@ -91,13 +96,12 @@ void PaintWidget::urToFile(QPoint pos) {
     if(!dir.exists("ur")) {
         dir.mkdir("ur");
     }
+    dir.cd("ur");
 
     if(urIndex < urIndexMax) {
-        if(dir.cd("ur")) {
-            for(uint i = urIndex; i < urIndexMax; i++) {
-                dir.remove(FILE_NAME(i, "Before"));
-                dir.remove(FILE_NAME(i, "Now"));
-            }
+        for(uint i = urIndex; i < urIndexMax; i++) {
+            dir.remove(FILE_NAME(i, "Before"));
+            dir.remove(FILE_NAME(i, "Now"));
         }
     }
 
@@ -117,10 +121,15 @@ void PaintWidget::urToFile(QPoint pos) {
 
     urIndex++;
     urIndexMax = urIndex;
+    if(urIndex - urIndexMin > 100) {
+        dir.remove(FILE_NAME(urIndexMin, "Before"));
+        dir.remove(FILE_NAME(urIndexMin, "Now"));
+        urIndexMin++;
+    }
 }
 
 void PaintWidget::undo() {
-    if(urIndex <= 0)
+    if(urIndex <= urIndexMin)
         return;
 
     urIndex--;
@@ -133,6 +142,7 @@ void PaintWidget::undo() {
         in >> pos >> img;
         drawImageToImage(imgBefore, img, pos);
         drawImageToImage(imgNow, img, pos);
+        fileImgBefore.close();
     }
 
     START_TIMER(timerUpdate, 16);
@@ -150,6 +160,7 @@ void PaintWidget::redo() {
         in >> pos >> img;
         drawImageToImage(imgBefore, img, pos);
         drawImageToImage(imgNow, img, pos);
+        fileImgNow.close();
     }
 
     urIndex++;
