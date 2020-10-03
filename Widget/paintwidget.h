@@ -13,6 +13,8 @@
 
 #include "header.h"
 
+#define DEBUG_PAINTWIDGET
+
 class PaintWidget : public QWidget
 {
     Q_OBJECT
@@ -33,6 +35,9 @@ public:
 
     ProcFunc procFunc = nullptr;
 
+signals:
+    void painted();
+
 private:
     QTimer *timerUpdate = new QTimer(this);
     QPoint posBefore;
@@ -44,8 +49,12 @@ private:
     QImage urImgNow;
     void drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos);
     void urToFile(QPoint pos);
+public:
     void undo();
     void redo();
+    void clear();
+    void btnEnabled(QWidget *widgetUndo, QWidget *widgetRedo);
+private:
     uint urIndex = 0;
     uint urIndexMin = 0;
     uint urIndexMax = 0;

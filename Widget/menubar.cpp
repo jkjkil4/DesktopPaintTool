@@ -5,7 +5,7 @@
 MenuBar::MenuBar(QWidget *parent) : QWidget(parent)
 {
     //创建控件
-    StateBtn *foldBtn = new StateBtn(QIcon(":/FoldBtn/Resource/FoldBtn1.png"), QIcon(":/FoldBtn/Resource/FoldBtn2.png"));
+    StateBtn *foldBtn = new StateBtn(QIcon(":/Btn/Resource/FoldBtn1.png"), QIcon(":/Btn/Resource/FoldBtn2.png"));
     foldBtn->setState(true);
     connect(foldBtn, &StateBtn::stateChanged, [=](bool state){ emit foldStateChanged(state); });
 

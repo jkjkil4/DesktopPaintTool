@@ -55,8 +55,19 @@ void PaintWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 1));
 
-    //p.drawImage(0, 0, imgNow);
     p.drawImage(0, 0, imgNow);
+
+#ifdef DEBUG_PAINTWIDGET
+    p.setBrush(QColor(255, 255, 255, 200));
+    p.drawRect(0, 0, 300, 300);
+    QFont font = p.font();
+    font.setPointSize(15);
+    p.setFont(font);
+    p.drawText(QRect(50, 50, 250, 250), Qt::AlignTop | Qt::AlignLeft,
+               "urIndex:       " + QString::number(urIndex) +
+               "\nurIndexMin:    " + QString::number(urIndexMin) +
+               "\nurIndexMax:    " + QString::number(urIndexMax));
+#endif
 }
 
 
@@ -70,7 +81,7 @@ void PaintWidget::closeEvent(QCloseEvent *) {
     }
 
     if(dir.cd("ur")) {
-        for(uint i = 0; i < urIndexMax; i++) {
+        for(uint i = urIndexMin; i < urIndexMax; i++) {
             dir.remove(FILE_NAME(i, "Before"));
             dir.remove(FILE_NAME(i, "Now"));
         }
@@ -98,11 +109,9 @@ void PaintWidget::urToFile(QPoint pos) {
     }
     dir.cd("ur");
 
-    if(urIndex < urIndexMax) {
-        for(uint i = urIndex; i < urIndexMax; i++) {
-            dir.remove(FILE_NAME(i, "Before"));
-            dir.remove(FILE_NAME(i, "Now"));
-        }
+    for(uint i = urIndex; i < urIndexMax; i++) {
+        dir.remove(FILE_NAME(i, "Before"));
+        dir.remove(FILE_NAME(i, "Now"));
     }
 
     QFile fileImgBefore(FILE_PATH(urIndex, "Before"));
@@ -126,6 +135,8 @@ void PaintWidget::urToFile(QPoint pos) {
         dir.remove(FILE_NAME(urIndexMin, "Now"));
         urIndexMin++;
     }
+
+    emit painted();
 }
 
 void PaintWidget::undo() {
@@ -166,6 +177,31 @@ void PaintWidget::redo() {
     urIndex++;
 
     START_TIMER(timerUpdate, 16);
+}
+
+void PaintWidget::clear() {
+    QDir dir(APP_DIR);
+    if(!dir.cd("ur"))
+        return;
+
+    for(uint i = urIndex; i < urIndexMax; i++) {
+        dir.remove(FILE_NAME(i, "Before"));
+        dir.remove(FILE_NAME(i, "Now"));
+    }
+
+    urIndex = 0;
+    urIndexMin = 0;
+    urIndexMax = 0;
+
+    imgBefore.fill(QColor(0, 0, 0, 0));
+    imgNow.fill(QColor(0, 0, 0, 0));
+
+    START_TIMER(timerUpdate, 16);
+}
+
+void PaintWidget::btnEnabled(QWidget *widgetUndo, QWidget *widgetRedo) {
+    widgetUndo->setEnabled(urIndex > urIndexMin);
+    widgetRedo->setEnabled(urIndex < urIndexMax);
 }
 
 #undef FILE_NAME

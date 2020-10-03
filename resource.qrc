@@ -1,10 +1,11 @@
 <RCC>
-    <qresource prefix="/FoldBtn">
+    <qresource prefix="/Btn">
         <file>Resource/FoldBtn1.png</file>
         <file>Resource/FoldBtn2.png</file>
-    </qresource>
-    <qresource prefix="/Btn">
         <file>Resource/Close.png</file>
+        <file>Resource/Undo.png</file>
+        <file>Resource/Redo.png</file>
+        <file>Resource/Clear.png</file>
     </qresource>
     <qresource prefix="/ToolBtn">
         <file>Resource/ToolCursor.png</file>

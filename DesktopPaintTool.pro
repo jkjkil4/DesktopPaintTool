@@ -29,6 +29,7 @@ SOURCES += \
         Widget/iconbtn.cpp \
         Widget/menubar.cpp \
         Widget/paintwidget.cpp \
+        Widget/pushbutton.cpp \
         Widget/statebtn.cpp \
         Widget/toolcursor.cpp \
         Widget/toollist.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
         Widget/iconbtn.h \
         Widget/menubar.h \
         Widget/paintwidget.h \
+        Widget/pushbutton.h \
         Widget/statebtn.h \
         Widget/toolcursor.h \
         Widget/toollist.h \

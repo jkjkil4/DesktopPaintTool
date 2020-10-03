@@ -7,6 +7,7 @@ Widget::Widget(QWidget *parent)
     PaintWidget::ins = paintWidget;
     paintWidget->setVisible(false);
     MenuBar *menuBar = new MenuBar;
+    QWidget *centralWidget = new QWidget;
     connect(menuBar, &MenuBar::wndMoveOffset, [=](int xOffset, int yOffset){
         int toX = x() + xOffset, toY = y() + yOffset;
         QRect screenRect =  QGuiApplication::primaryScreen()->availableVirtualGeometry();
@@ -15,12 +16,37 @@ Widget::Widget(QWidget *parent)
         move(toX, toY);
     });
     connect(menuBar, &MenuBar::foldStateChanged, [=](bool state){
-        toolsWidget->setVisible(state);
+        centralWidget->setVisible(state);
         adjustSize();
     });
     connect(menuBar, &MenuBar::wndClose, [=]{
         close();
     });
+
+    PushButton *btnUndo = new PushButton(QIcon(":/Btn/Resource/Undo.png"), "撤销");
+    btnUndo->setShortcut(QKeySequence("Ctrl+Z"));
+    PushButton *btnRedo = new PushButton(QIcon(":/Btn/Resource/Redo.png"), "重做");
+    btnRedo->setShortcut(QKeySequence("Ctrl+Y"));
+    PushButton *btnClear = new PushButton(QIcon(":/Btn/Resource/Clear.png"), "清空");
+    btnClear->setColor2(QColor(250, 180, 180));
+    connect(paintWidget, &PaintWidget::painted, [=]{
+        paintWidget->btnEnabled(btnUndo, btnRedo);
+    });
+    connect(btnUndo, &PushButton::clicked, [=]{
+        paintWidget->undo();
+        paintWidget->btnEnabled(btnUndo, btnRedo);
+    });
+    connect(btnRedo, &PushButton::clicked, [=]{
+        paintWidget->redo();
+        paintWidget->btnEnabled(btnUndo, btnRedo);
+    });
+    connect(btnClear, &PushButton::clicked, [=]{
+        paintWidget->clear();
+        paintWidget->btnEnabled(btnUndo, btnRedo);
+    });
+    btnUndo->setEnabled(false);
+    btnRedo->setEnabled(false);
+    btnClear->setEnabled(false);
 
     ToolList *toolList = new ToolList;
     connect(toolList, &ToolList::toolChanged, [=]{
@@ -29,6 +55,8 @@ Widget::Widget(QWidget *parent)
             paintWidget->setVisible(true);
             setParent(paintWidget);
             setVisible(true);
+            paintWidget->btnEnabled(btnUndo, btnRedo);
+            btnClear->setEnabled(true);
         }
     });
     connect(toolCursor, &ToolCursor::clicked, [=]{
@@ -39,25 +67,32 @@ Widget::Widget(QWidget *parent)
             setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
             setAttribute(Qt::WA_QuitOnClose);
             setVisible(true);
+            btnUndo->setEnabled(false);
+            btnRedo->setEnabled(false);
+            btnClear->setEnabled(false);
         }
     });
 
-    limitHeight(toolsWidget, 400);
-
-    //toolsWidget的layout
-    QVBoxLayout *layTools = new QVBoxLayout;
-    layTools->setMargin(4);
-    layTools->setSpacing(2);
-    layTools->addWidget(toolCursor);
-    layTools->addWidget(toolList, 1);
-    toolsWidget->setLayout(layTools);
+    limitHeight(centralWidget, 400);
 
     //创建布局
+    QVBoxLayout *layCentral = new QVBoxLayout;
+    layCentral->setMargin(4);
+    layCentral->setSpacing(2);
+    layCentral->addWidget(btnUndo);
+    layCentral->addWidget(btnRedo);
+    layCentral->addSpacing(4);
+    layCentral->addWidget(btnClear);
+    layCentral->addSpacing(4);
+    layCentral->addWidget(toolCursor);
+    layCentral->addWidget(toolList, 1);
+    centralWidget->setLayout(layCentral);
+
     QVBoxLayout *layMain = new QVBoxLayout;
     layMain->setSpacing(0);
     layMain->setMargin(1);
     layMain->addWidget(menuBar);
-    layMain->addWidget(toolsWidget);
+    layMain->addWidget(centralWidget);
     setLayout(layMain);
 
     //设置属性

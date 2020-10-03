@@ -17,6 +17,8 @@ class StateBtn : public QAbstractButton
     Q_OBJECT
 protected:
     void mouseMoveEvent(QMouseEvent *) override {}
+    void keyPressEvent(QKeyEvent *) override {}
+    void keyReleaseEvent(QKeyEvent *) override {}
     void paintEvent(QPaintEvent *) override;
 
 public:

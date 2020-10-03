@@ -14,6 +14,7 @@
 #include "Widget/toolcursor.h"
 #include "Widget/toollist.h"
 #include "Widget/paintwidget.h"
+#include "Widget/pushbutton.h"
 
 
 /*
@@ -24,6 +25,9 @@ class Widget : public QWidget
 {
     Q_OBJECT
 protected:
+    void mousePressEvent(QMouseEvent *) override {}
+    void mouseMoveEvent(QMouseEvent *) override {}
+    void mouseReleaseEvent(QMouseEvent *) override {}
     void paintEvent(QPaintEvent *) override;
     void closeEvent(QCloseEvent *ev) override;
 
@@ -32,8 +36,6 @@ public:
     ~Widget() override;
 
 private:
-    QWidget *toolsWidget = new QWidget;
-
     ToolCursor *toolCursor = new ToolCursor;
 
     PaintWidget *paintWidget = new PaintWidget;
