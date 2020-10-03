@@ -63,4 +63,18 @@ inline void jDrawRecFrame(QPainter& p, int x, int y, int w, int h, int width, QC
     p.fillRect(x, y + h - width, w, width, c);
 }
 
+inline void jCopyImg(QImage &targetImg, QPoint targetPos, const QImage &img, QRect rect) {
+    int width = rect.width();
+    int height = rect.height();
+    int posX = rect.x();
+    int posY = rect.y();
+    int targetX = targetPos.x();
+    int targetY = targetPos.y();
+    for(int j = 0; j < height; j++) {
+        for(int i = 0; i < width; i++) {
+            targetImg.setPixel(targetX + i, targetY + j, img.pixel(posX + i, posY + j));
+        }
+    }
+}
+
 #endif // HEADER_H

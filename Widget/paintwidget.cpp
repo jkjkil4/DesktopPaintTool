@@ -45,8 +45,10 @@ void PaintWidget::mouseReleaseEvent(QMouseEvent *ev) {
         urImgBefore = imgBefore.copy(updateRect);
         urImgNow = imgNow.copy(updateRect);
         urToFile(updateRect.topLeft());
-        QPainter p(&imgBefore);
-        p.drawImage(updateRect, imgNow, updateRect);
+        //QPainter p(&imgBefore);
+        //p.drawImage(updateRect, imgNow, updateRect);
+        jCopyImg(imgBefore, updateRect.topLeft(), imgNow, updateRect);
+
         START_TIMER(timerUpdate, 16);
     }
 }
@@ -55,6 +57,7 @@ void PaintWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 1));
 
+    //p.drawImage(10, 10, imgBefore);
     p.drawImage(0, 0, imgNow);
 
 #ifdef DEBUG_PAINTWIDGET
@@ -90,17 +93,17 @@ void PaintWidget::closeEvent(QCloseEvent *) {
     }
 }
 
-void PaintWidget::drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos) {
-    int imgWidth = img.width();
-    int imgHeight = img.height();
-    int posX = pos.x();
-    int posY = pos.y();
-    for(int j = 0; j < imgHeight; j++) {
-        for(int i = 0; i < imgWidth; i++) {
-            targetImg.setPixel(i + posX, j + posY, img.pixel(i, j));
-        }
-    }
-}
+//void PaintWidget::drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos) {
+//    int imgWidth = img.width();
+//    int imgHeight = img.height();
+//    int posX = pos.x();
+//    int posY = pos.y();
+//    for(int j = 0; j < imgHeight; j++) {
+//        for(int i = 0; i < imgWidth; i++) {
+//            targetImg.setPixel(i + posX, j + posY, img.pixel(i, j));
+//        }
+//    }
+//}
 
 void PaintWidget::urToFile(QPoint pos) {
     QDir dir(APP_DIR);
@@ -151,8 +154,10 @@ void PaintWidget::undo() {
         QPoint pos;
         QImage img;
         in >> pos >> img;
-        drawImageToImage(imgBefore, img, pos);
-        drawImageToImage(imgNow, img, pos);
+//        drawImageToImage(imgBefore, img, pos);
+//        drawImageToImage(imgNow, img, pos);
+        jCopyImg(imgBefore, pos, img, img.rect());
+        jCopyImg(imgNow, pos, img, img.rect());
         fileImgBefore.close();
     }
 
@@ -169,8 +174,10 @@ void PaintWidget::redo() {
         QPoint pos;
         QImage img;
         in >> pos >> img;
-        drawImageToImage(imgBefore, img, pos);
-        drawImageToImage(imgNow, img, pos);
+//        drawImageToImage(imgBefore, img, pos);
+//        drawImageToImage(imgNow, img, pos);
+        jCopyImg(imgBefore, pos, img, img.rect());
+        jCopyImg(imgNow, pos, img, img.rect());
         fileImgNow.close();
     }
 

@@ -47,7 +47,7 @@ private:
     //ur means UndoRedo
     QImage urImgBefore;
     QImage urImgNow;
-    void drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos);
+    //void drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos);
     void urToFile(QPoint pos);
 public:
     void undo();

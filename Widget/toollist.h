@@ -46,7 +46,21 @@ public:
             int h = qMin(img.height() - y, 2 * size + 4);
             sumRect(updateRect, QRect(x, y, w, h));
         }),
-        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolEraser.png"), "橡皮擦"), nullptr)
+        Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolEraser.png"), "橡皮擦"),
+        [](QImage &img, QPoint, QPoint pos, int size, QRect &updateRect){
+            QPainter p(&img);
+            int size_ = size * 2;
+            int xStart = qMax(0, pos.x() - size_);
+            int xEnd = qMin(img.width(), pos.x() + size_);
+            int yStart = qMax(0, pos.y() - size_);
+            int yEnd = qMin(img.height(), pos.y() + size_);
+            for(int j = yStart; j < yEnd; j++) {
+                for(int i = xStart; i < xEnd; i++) {
+                    img.setPixel(i, j, qRgba(0, 0, 0, 0));
+                }
+            }
+            sumRect(updateRect, QRect(xStart, yStart, xEnd - xStart, yEnd - yStart));
+        })
     };
 
     SC int btnWidth = 60;
