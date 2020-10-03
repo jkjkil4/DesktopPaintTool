@@ -6,6 +6,7 @@
         <file>Resource/Undo.png</file>
         <file>Resource/Redo.png</file>
         <file>Resource/Clear.png</file>
+        <file>Resource/About.png</file>
     </qresource>
     <qresource prefix="/ToolBtn">
         <file>Resource/ToolCursor.png</file>

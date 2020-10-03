@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QMessageBox>
+#include <QMenu>
 #include <QVBoxLayout>
 
 #include <QGuiApplication>

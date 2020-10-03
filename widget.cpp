@@ -23,14 +23,33 @@ Widget::Widget(QWidget *parent)
         close();
     });
 
+    PushButton *btnAbout = new PushButton(QIcon(":/Btn/Resource/About.png"), "关于");
     PushButton *btnUndo = new PushButton(QIcon(":/Btn/Resource/Undo.png"), "撤销");
     btnUndo->setShortcut(QKeySequence("Ctrl+Z"));
     PushButton *btnRedo = new PushButton(QIcon(":/Btn/Resource/Redo.png"), "重做");
     btnRedo->setShortcut(QKeySequence("Ctrl+Y"));
     PushButton *btnClear = new PushButton(QIcon(":/Btn/Resource/Clear.png"), "清空");
     btnClear->setColor2(QColor(250, 180, 180));
-    connect(paintWidget, &PaintWidget::painted, [=]{
-        paintWidget->btnEnabled(btnUndo, btnRedo);
+    connect(paintWidget, &PaintWidget::painted, [=]{ paintWidget->btnEnabled(btnUndo, btnRedo); });
+    connect(btnAbout, &PushButton::clicked, [=]{
+        QMenu menu;
+
+        QAction actAbout("关于");
+        menu.addAction(&actAbout);
+        QAction actAboutQt("关于Qt");
+        menu.addAction(&actAboutQt);
+
+        menu.move(cursor().pos());
+        QAction *res = menu.exec();
+
+        if(res == &actAbout) {
+            QMessageBox::about(this, "关于",
+                               "作者: jkjkil4<br>"
+                               "github: <a href=https://github.com/jkjkil4/DesktopPaintTool>https://github.com/jkjkil4/DesktopPaintTool</a><br>"
+                               "反馈问题: jkjkil@qq.com");
+        } else if(res == &actAboutQt) {
+            QMessageBox::aboutQt(this);
+        }
     });
     connect(btnUndo, &PushButton::clicked, [=]{
         paintWidget->undo();
@@ -79,6 +98,8 @@ Widget::Widget(QWidget *parent)
     QVBoxLayout *layCentral = new QVBoxLayout;
     layCentral->setMargin(4);
     layCentral->setSpacing(2);
+    layCentral->addWidget(btnAbout);
+    layCentral->addSpacing(4);
     layCentral->addWidget(btnUndo);
     layCentral->addWidget(btnRedo);
     layCentral->addSpacing(4);
