@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QDebug>
 #include <QCoreApplication>
+#include <QTime>
+//#include <omp.h>
 
 
 #define VAR_GET_FUNC(Func, var, Type) Type get##Func() const { return var; }
@@ -63,18 +65,40 @@ inline void jDrawRecFrame(QPainter& p, int x, int y, int w, int h, int width, QC
     p.fillRect(x, y + h - width, w, width, c);
 }
 
-inline void jCopyImg(QImage &targetImg, QPoint targetPos, const QImage &img, QRect rect) {
-    int width = rect.width();
-    int height = rect.height();
-    int posX = rect.x();
-    int posY = rect.y();
-    int targetX = targetPos.x();
-    int targetY = targetPos.y();
-    for(int j = 0; j < height; j++) {
-        for(int i = 0; i < width; i++) {
-            targetImg.setPixel(targetX + i, targetY + j, img.pixel(posX + i, posY + j));
-        }
+
+//#define DEBUG_JCOPYIMG
+
+inline void jCopyImg(QImage &targetImg, QPoint targetPos, QImage &img, QRect rect) {
+#ifdef DEBUG_JCOPYIMG
+    QTime t;
+    t.start();
+#endif
+
+//    int width = rect.width();
+//    int height = rect.height();
+//    int posX = rect.x();
+//    int posY = rect.y();
+//    int targetX = targetPos.x();
+//    int targetY = targetPos.y();
+//#pragma omp parallel for
+//    for(int j = 0; j < height; j++) {
+//#pragma omp parallel for
+//        for(int i = 0; i < width; i++) {
+//            targetImg.setPixel(targetX + i, targetY + j, img.pixel(posX + i, posY + j));
+//        }
+//    }
+
+    size_t cpyLen = 4 * (size_t)rect.width();
+    int rectHeight = rect.height();
+    for(int j = 0; j < rectHeight; j++) {
+        uchar *bitsTarget = targetImg.bits() + 4 * (targetPos.x() + (targetPos.y() + j) * targetImg.width());
+        uchar *bits = img.bits() + 4 * (rect.x() + (rect.y() + j) * img.width());
+        memcpy(bitsTarget, bits, cpyLen);
     }
+
+#ifdef DEBUG_JCOPYIMG
+    qDebug().noquote() << "jCopyImg" << t.elapsed();
+#endif
 }
 
 #endif // HEADER_H

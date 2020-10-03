@@ -13,7 +13,7 @@
 
 #include "header.h"
 
-#define DEBUG_PAINTWIDGET
+//#define DEBUG_PAINTWIDGET
 
 class PaintWidget : public QWidget
 {
