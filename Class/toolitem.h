@@ -24,7 +24,7 @@ public:
     QIcon icon;     //图像
     QString text;   //文字
 
-    static ToolItem *current;
+    static ToolItem *current;   //当前ToolItem
 };
 
 #endif // TOOLITEM_H

@@ -4,27 +4,31 @@ PaintWidget* PaintWidget::ins = nullptr;
 
 PaintWidget::PaintWidget(QWidget *parent) : QWidget(parent)
 {
+    //得到桌面大小
     QRect desktopRect = QGuiApplication::primaryScreen()->geometry();
     setGeometry(0, 0, desktopRect.width(), desktopRect.height());
 
+    //初始化图像
     imgBefore = QImage(desktopRect.size(), QImage::Format_ARGB32);
     imgNow = QImage(desktopRect.size(), QImage::Format_ARGB32);
     imgBefore.fill(QColor(0, 0, 0, 0));
     imgNow.fill(QColor(0, 0, 0, 0));
 
+    //设置窗口属性
     setWindowFlags(Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint | Qt::SubWindow);
     setAttribute(Qt::WA_TranslucentBackground);
 
+    //设置timerUpdate的属性
     timerUpdate->setSingleShot(true);
     connect(timerUpdate, SIGNAL(timeout()), this, SLOT(update()));
 }
 
 void PaintWidget::mousePressEvent(QMouseEvent *ev) {
     if(ev->button() == Qt::LeftButton) {
-        if(procFunc) {
+        if(procFunc) {  //如果存在图像处理函数
             updateRect = QRect();
             posBefore = ev->pos();
-            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);
+            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);   //调用图像处理函数
             START_TIMER(timerUpdate, 16);
         }
     }
@@ -32,8 +36,8 @@ void PaintWidget::mousePressEvent(QMouseEvent *ev) {
 
 void PaintWidget::mouseMoveEvent(QMouseEvent *ev) {
     if(ev->buttons() & Qt::LeftButton) {
-        if(procFunc) {
-            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);
+        if(procFunc) {  //如果存在图像处理函数
+            (*procFunc)(imgNow, posBefore, ev->pos(), 3, updateRect);   //调用图像处理函数
             posBefore = ev->pos();
             START_TIMER(timerUpdate, 16);
         }
@@ -42,20 +46,20 @@ void PaintWidget::mouseMoveEvent(QMouseEvent *ev) {
 
 void PaintWidget::mouseReleaseEvent(QMouseEvent *ev) {
     if(ev->button() == Qt::LeftButton) {
-        urImgBefore = imgBefore.copy(updateRect);
-        urImgNow = imgNow.copy(updateRect);
-        urToFile(updateRect.topLeft());
-        //QPainter p(&imgBefore);
-        //p.drawImage(updateRect, imgNow, updateRect);
-        jCopyImg(imgBefore, updateRect.topLeft(), imgNow, updateRect);
+        if(procFunc) {  //如果存在图像处理函数
+            urImgBefore = imgBefore.copy(updateRect);   //将imgBefore有更新的区域复制到urImgBefore
+            urImgNow = imgNow.copy(updateRect); //将imgNow有更新的区域复制到urImgNow
+            urToFile(updateRect.topLeft()); //存储ur文件
+            jCopyImg(imgBefore, updateRect.topLeft(), imgNow, updateRect);  //使得imgBefore与imgNow相同
 
-        START_TIMER(timerUpdate, 16);
+            START_TIMER(timerUpdate, 16);
+        }
     }
 }
 
 void PaintWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);
-    p.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 1));
+    p.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 1));    //绘制一点透明度的矩形，使得窗口能接收到鼠标消息
 
     //p.drawImage(10, 10, imgBefore);
     p.drawImage(0, 0, imgNow);
@@ -66,7 +70,7 @@ void PaintWidget::paintEvent(QPaintEvent *) {
     QFont font = p.font();
     font.setPointSize(15);
     p.setFont(font);
-    p.drawText(QRect(50, 50, 250, 250), Qt::AlignTop | Qt::AlignLeft,
+    p.drawText(QRect(50, 50, 250, 250), Qt::AlignCenter | Qt::AlignVCenter,
                "urIndex:       " + QString::number(urIndex) +
                "\nurIndexMin:    " + QString::number(urIndexMin) +
                "\nurIndexMax:    " + QString::number(urIndexMax));
@@ -84,11 +88,14 @@ void PaintWidget::closeEvent(QCloseEvent *) {
     }
 
     if(dir.cd("ur")) {
+        //清空所有ur文件
         for(uint i = urIndexMin; i < urIndexMax; i++) {
             dir.remove(FILE_NAME(i, "Before"));
             dir.remove(FILE_NAME(i, "Now"));
         }
+        //重置ur属性
         urIndex = 0;
+        urIndexMin = 0;
         urIndexMax = 0;
     }
 }
@@ -101,11 +108,12 @@ void PaintWidget::urToFile(QPoint pos) {
     }
     dir.cd("ur");
 
-    for(uint i = urIndex; i < urIndexMax; i++) {
+    for(uint i = urIndex; i < urIndexMax; i++) {    //清空大于或等于urIndex的ur文件
         dir.remove(FILE_NAME(i, "Before"));
         dir.remove(FILE_NAME(i, "Now"));
     }
 
+    //存储undo文件
     QFile fileImgBefore(FILE_PATH(urIndex, "Before"));
     if(fileImgBefore.open(QIODevice::WriteOnly)) {
         QDataStream out(&fileImgBefore);
@@ -113,6 +121,7 @@ void PaintWidget::urToFile(QPoint pos) {
         fileImgBefore.close();
     }
 
+    //存储redo文件
     QFile fileImgNow(FILE_PATH(urIndex, "Now"));
     if(fileImgNow.open(QIODevice::WriteOnly)) {
         QDataStream out(&fileImgNow);
@@ -122,6 +131,7 @@ void PaintWidget::urToFile(QPoint pos) {
 
     urIndex++;
     urIndexMax = urIndex;
+    //限制ur文件的数量
     if(urIndex - urIndexMin > 100) {
         dir.remove(FILE_NAME(urIndexMin, "Before"));
         dir.remove(FILE_NAME(urIndexMin, "Now"));
@@ -143,8 +153,6 @@ void PaintWidget::undo() {
         QPoint pos;
         QImage img;
         in >> pos >> img;
-//        drawImageToImage(imgBefore, img, pos);
-//        drawImageToImage(imgNow, img, pos);
         jCopyImg(imgBefore, pos, img, img.rect());
         jCopyImg(imgNow, pos, img, img.rect());
         fileImgBefore.close();
@@ -163,8 +171,6 @@ void PaintWidget::redo() {
         QPoint pos;
         QImage img;
         in >> pos >> img;
-//        drawImageToImage(imgBefore, img, pos);
-//        drawImageToImage(imgNow, img, pos);
         jCopyImg(imgBefore, pos, img, img.rect());
         jCopyImg(imgNow, pos, img, img.rect());
         fileImgNow.close();

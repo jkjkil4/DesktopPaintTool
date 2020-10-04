@@ -34,12 +34,12 @@ public:
     VAR_FUNC_UPDATE(DotSpacing, dotSpacing, int)
 
 signals:
-    void wndMoveOffset(int xOffset, int yOffset);
-    void foldStateChanged(bool state);
-    void wndClose();
+    void wndMoveOffset(int xOffset, int yOffset);   //需要移动窗口时发出的信号
+    void foldStateChanged(bool state);  //折叠按钮状态改变时发出的信号
+    void wndClose();    //需要关闭窗口时发出的信号
 
 private:
-    //绘制相关设置
+    //绘制的相关设置
     QColor bgColor = QColor(225, 225, 225);
     QColor dotColor = QColor(170, 170, 170);
     int dotRadius = 2;

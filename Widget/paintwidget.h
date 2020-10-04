@@ -15,6 +15,11 @@
 
 //#define DEBUG_PAINTWIDGET
 
+
+/*
+    PaintWidget
+    用来绘制的"画板"
+*/
 class PaintWidget : public QWidget
 {
     Q_OBJECT
@@ -31,20 +36,21 @@ public:
     PaintWidget(QWidget *parent = nullptr);
     ~PaintWidget() override = default;
 
-    static PaintWidget *ins;
+    static PaintWidget *ins;    //便于直接通过PaintWidget::ins来调用
 
-    ProcFunc procFunc = nullptr;
+    ProcFunc procFunc = nullptr;    //图像处理的函数指针
 
 signals:
-    void painted();
+    void painted(); //当内容发生改变时发出的信号
 
 private:
-    QTimer *timerUpdate = new QTimer(this);
-    QPoint posBefore;
-    QImage imgBefore, imgNow;
-    QRect updateRect;
+    QTimer *timerUpdate = new QTimer(this); //用来限制update频率的定时器
+    QPoint posBefore;   //上一个绘制的位置
+    QImage imgBefore, imgNow;   //imgNow为直接绘制到的图像，两个图像用来比较差异
+    QRect updateRect;   //需要更新的区域
 
-    //ur means UndoRedo
+    //用来处理撤销和重做的东西
+    //ur 是 UndoRedo 的意思
     QImage urImgBefore;
     QImage urImgNow;
     void urToFile(QPoint pos);

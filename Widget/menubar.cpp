@@ -47,6 +47,7 @@ void MenuBar::paintEvent(QPaintEvent *) {
 
     p.fillRect(0, 0, width(), height(), bgColor);
 
+    //绘制 点
     int dotAreaWidth = (2 * dotRadius + dotSpacing) * (dotCount - 1);
     int xStart = (width() - dotAreaWidth) / 2;
     int yPos = height() / 2;

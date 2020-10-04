@@ -23,11 +23,6 @@ public:
     ~IconBtn() override = default;
 
     bool checkMouseAt();
-
-//    VAR_FUNC(BgColor, bgColor, QColor)
-
-//private:
-//    QColor bgColor = QColor(102, 204, 255);
 };
 
 #endif // ICONBTN_H
