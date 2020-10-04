@@ -93,17 +93,6 @@ void PaintWidget::closeEvent(QCloseEvent *) {
     }
 }
 
-//void PaintWidget::drawImageToImage(QImage &targetImg, const QImage &img, QPoint pos) {
-//    int imgWidth = img.width();
-//    int imgHeight = img.height();
-//    int posX = pos.x();
-//    int posY = pos.y();
-//    for(int j = 0; j < imgHeight; j++) {
-//        for(int i = 0; i < imgWidth; i++) {
-//            targetImg.setPixel(i + posX, j + posY, img.pixel(i, j));
-//        }
-//    }
-//}
 
 void PaintWidget::urToFile(QPoint pos) {
     QDir dir(APP_DIR);
@@ -191,7 +180,7 @@ void PaintWidget::clear() {
     if(!dir.cd("ur"))
         return;
 
-    for(uint i = urIndex; i < urIndexMax; i++) {
+    for(uint i = urIndexMin; i < urIndexMax; i++) {
         dir.remove(FILE_NAME(i, "Before"));
         dir.remove(FILE_NAME(i, "Now"));
     }

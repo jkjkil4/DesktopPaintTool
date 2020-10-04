@@ -5,7 +5,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QCoreApplication>
-#include <QTime>
+//#include <QTime>
 //#include <omp.h>
 
 
@@ -73,20 +73,6 @@ inline void jCopyImg(QImage &targetImg, QPoint targetPos, QImage &img, QRect rec
     QTime t;
     t.start();
 #endif
-
-//    int width = rect.width();
-//    int height = rect.height();
-//    int posX = rect.x();
-//    int posY = rect.y();
-//    int targetX = targetPos.x();
-//    int targetY = targetPos.y();
-//#pragma omp parallel for
-//    for(int j = 0; j < height; j++) {
-//#pragma omp parallel for
-//        for(int i = 0; i < width; i++) {
-//            targetImg.setPixel(targetX + i, targetY + j, img.pixel(posX + i, posY + j));
-//        }
-//    }
 
     size_t cpyLen = 4 * (size_t)rect.width();
     int rectHeight = rect.height();

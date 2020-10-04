@@ -48,14 +48,15 @@ public:
         }),
         Item(ToolItem(QIcon(":/ToolBtn/Resource/ToolEraser.png"), "橡皮擦"),
         [](QImage &img, QPoint posBefore, QPoint pos, int size, QRect &updateRect){
+            int size_ = 2 * size;
             QPainter p(&img);
             p.setCompositionMode(QPainter::CompositionMode_Clear);
-            p.setPen(QPen(Qt::black, size * 2));
+            p.setPen(QPen(Qt::black, size_ * 2));
             p.drawLine(posBefore, pos);
-            int x = qMax(0, pos.x() - size - 2);
-            int y = qMax(0, pos.y() - size - 2);
-            int w = qMin(img.width() - x, 2 * size + 4);
-            int h = qMin(img.height() - y, 2 * size + 4);
+            int x = qMax(0, pos.x() - size_ - 2);
+            int y = qMax(0, pos.y() - size_ - 2);
+            int w = qMin(img.width() - x, 2 * size_ + 4);
+            int h = qMin(img.height() - y, 2 * size_ + 4);
             sumRect(updateRect, QRect(x, y, w, h));
         })
     };
