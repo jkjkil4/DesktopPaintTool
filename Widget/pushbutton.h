@@ -5,6 +5,11 @@
 
 #include "header.h"
 
+
+/*
+    PushButton
+    带有一个图标和一个文字的按钮
+*/
 class PushButton : public QAbstractButton
 {
 protected:
@@ -29,9 +34,9 @@ private:
     QIcon icon;
     QSize iconSize = QSize(16, 16);
     QString text;
-    QColor color1 = QColor(240, 240, 240);
-    QColor color2 = QColor(180, 180, 250);
-    QColor color3 = QColor(200, 200, 200);
+    QColor color1 = QColor(240, 240, 240);  //默认颜色
+    QColor color2 = QColor(180, 180, 250);  //鼠标悬停时的颜色
+    QColor color3 = QColor(200, 200, 200);  //鼠标按下时的颜色
 };
 
 #endif // PUSHBUTTON_H

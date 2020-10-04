@@ -28,6 +28,7 @@ void IconBtn::paintEvent(QPaintEvent *) {
 
     QPainter p(this);
 
+    //根据鼠标的状态绘制不同的背景色
     if(down) {
         p.fillRect(0, 0, width(), height(), QColor(0, 0, 0, 50));
     }

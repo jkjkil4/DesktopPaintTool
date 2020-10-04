@@ -16,7 +16,7 @@ class ToolItem
 public:
     ToolItem() = default;
     ToolItem(const QIcon &icon, const QString &text);
-    void onPaint(QPainter &p, QRect r);
+    void onPaint(QPainter &p, QRect r);     //调用该函数以绘制相关东西
 
     SC int iconWidth = 40;  //图像宽度
     SC int iconHeight = 40; //图像高度
